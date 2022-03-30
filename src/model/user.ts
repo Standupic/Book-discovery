@@ -1,16 +1,17 @@
 import { Action, Thunk, action, thunk } from 'easy-peasy';
-import { IUserAPI, Credential, IPerson } from '../types/user';
+import { Credential, IPerson } from '../types/user';
 import { sigInUp } from '../helpers';
+import { FormMode } from '../components/Form';
 
 export interface User {
   auth: boolean;
   user: IPerson;
-  registration: Thunk<User, Credential>;
-  authorization: Thunk<User, Credential>;
+  signUp: Thunk<User, Credential>;
+  signIn: Thunk<User, Credential>;
   loading: boolean;
-  error: Error | null;
+  error: string | null;
   setUser: Action<User, IPerson>;
-  setError: Action<User, Error>;
+  setError: Action<User, string>;
   setLoading: Action<User, boolean>;
 }
 
@@ -21,18 +22,19 @@ const user: User = {
   error: null,
   setUser: action((state, payload: IPerson) => {
     state.user = payload;
+    state.auth = true;
   }),
-  setError: action((state, payload: Error) => {
+  setError: action((state, payload: string) => {
     state.error = payload;
   }),
   setLoading: action((state, payload: boolean) => {
     state.loading = payload;
   }),
-  authorization: thunk(async (actions, payload: Credential) => {
-    return sigInUp('auth/login', payload, actions);
+  signIn: thunk(async (actions, payload: Credential) => {
+    sigInUp('/auth/login', payload, actions, FormMode.signIn);
   }),
-  registration: thunk(async (actions, payload: Credential) => {
-    return sigInUp('/auth/register', payload, actions);
+  signUp: thunk(async (actions, payload: Credential) => {
+    sigInUp('/auth/register', payload, actions, FormMode.signUp);
   }),
 };
 
