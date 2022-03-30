@@ -1,3 +1,5 @@
-export interface Token {
-  token: string;
-}
+import { IStorage } from '../services/localStorage';
+
+export const StorageObject: IStorage = {
+  token: 'token',
+};

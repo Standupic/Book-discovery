@@ -1,11 +1,9 @@
-interface ITokenKeys {
-  token: string;
+export enum STORAGE_KEYS {
+  token = 'token',
 }
-export const STORAGE_KEYS: ITokenKeys = {
-  token: 'token',
-};
+export type IStorage = Record<STORAGE_KEYS, any>;
 
-export function getStorageValue<Key = any>(key: string): any | null {
+export function getStorageValue<Key = STORAGE_KEYS>(key: STORAGE_KEYS): any | null {
   const value = localStorage.getItem(key);
   try {
     return JSON.parse(value || '');
@@ -15,7 +13,7 @@ export function getStorageValue<Key = any>(key: string): any | null {
   return null;
 }
 
-export function setStorageValue(key: string, value: any) {
+export function setStorageValue(key: STORAGE_KEYS, value: any) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 

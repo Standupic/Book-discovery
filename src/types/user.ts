@@ -1,4 +1,4 @@
-interface IPerson {
+export interface IPerson {
   id: string;
   username: string;
   token: string;
