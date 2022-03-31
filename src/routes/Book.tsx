@@ -1,7 +1,7 @@
 import { useHistory, useParams } from 'react-router-dom';
 import { FC, useEffect, useState } from 'react';
 import { Actions, useStoreActions, useStoreState } from 'easy-peasy';
-import { Box, Flex, Container, VStack } from '@chakra-ui/react';
+import { Box, Container } from '@chakra-ui/react';
 import { StoreModel } from '../model';
 import { IBook } from '../types/books';
 import BookItem from '../components/BookItem';

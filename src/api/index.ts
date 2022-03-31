@@ -16,13 +16,10 @@ const isAuthRequest = (config: AxiosRequestConfig) => {
 
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
   if (config && config.headers && !isAuthRequest(config)) {
-    console.log('request');
-    console.log(getStorageValue(STORAGE_KEYS.token));
     config.headers.Authorization = `Bearer ${getStorageValue<STORAGE_KEYS.token>(
       STORAGE_KEYS.token,
     )}`;
   }
-  console.log(config);
   return config;
 });
 
