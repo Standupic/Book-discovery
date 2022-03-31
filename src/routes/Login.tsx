@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { FC } from 'react';
-import TabsLogin from './TabsLogin';
+import TabsLogin from '../components/TabsLogin';
 
 const Login: FC = () => {
   return (

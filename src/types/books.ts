@@ -1,11 +1,11 @@
-export interface Book {
+export interface IBook {
   tittle: number;
   author: string;
   coverImageUrl: string;
-  id: number;
+  id: string;
   publisher: string;
   synopsis: string;
 }
 export interface IBooksAPI {
-  books: Book[];
+  books: IBook[];
 }

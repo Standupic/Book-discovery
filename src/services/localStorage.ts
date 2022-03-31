@@ -17,6 +17,6 @@ export function setStorageValue(key: STORAGE_KEYS, value: any) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-export function removeStorageValue(key: string) {
+export function removeStorageValue(key: STORAGE_KEYS) {
   localStorage.removeItem(key);
 }

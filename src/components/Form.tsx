@@ -4,6 +4,7 @@ import { Button, FormErrorMessage, FormControl, FormLabel, Input, VStack } from 
 import { FC, useCallback, useEffect } from 'react';
 import { Actions, useStoreActions, useStoreState } from 'easy-peasy';
 import { StoreModel } from '../model';
+import { getStorageValue, STORAGE_KEYS } from '../services/localStorage';
 
 export enum FormMode {
   signIn = 'signIn',
@@ -36,7 +37,6 @@ const FormLogin: FC<IForm> = (props) => {
       const { username, password } = values;
       if (mode === FormMode.signIn) {
         signIn({ username: username, password: password }).then(() => {
-          console.log('!');
           history.push('/books');
         });
       } else {
