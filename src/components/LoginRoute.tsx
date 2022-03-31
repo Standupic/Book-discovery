@@ -9,7 +9,7 @@ const LoginRoute: FC<RouteProps> = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={() => {
-        return !auth ? <>{children}</> : <Redirect to="/" />;
+        return !auth ? <>{children}</> : <Redirect to="/books" />;
       }}
     />
   );

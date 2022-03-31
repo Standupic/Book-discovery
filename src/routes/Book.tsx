@@ -10,24 +10,14 @@ import NavBar from '../components/NavBar';
 
 const Book: FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [data, setData] = useState<IBook | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [book, setBook] = useState<IBook | null>(null);
   const auth = useStoreState((state: StoreModel) => state.user.auth);
-  const [error, setError] = useState<boolean>();
-  const getBook = useStoreActions((actions: Actions<StoreModel>) => actions.books.getBook);
+  const { loading } = useStoreState((state: StoreModel) => state.books);
+  const { getBook } = useStoreActions((actions: Actions<StoreModel>) => actions.books);
   const history = useHistory();
-  const getBookData = async () => {
-    try {
-      setLoading(true);
-      const data = await getBook(id);
-      if (data) {
-        setData(data.book);
-      }
-    } catch (e) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+  const setBookHandler = async () => {
+    const { book } = await getBook(id);
+    setBook(book);
   };
   useEffect(() => {
     if (!auth) {
@@ -35,9 +25,9 @@ const Book: FC = () => {
     }
   }, [auth]);
   useEffect(() => {
-    getBookData();
+    setBookHandler();
   }, [history, id]);
-  if (data) {
+  if (book) {
     return (
       <>
         <Box p={5} flex={1}>
@@ -47,13 +37,13 @@ const Book: FC = () => {
           <Box bg="white" flex={2} p={6} rounded="md" maxW="1000px">
             <BookItem
               boxSize="250px"
-              publisher={data.publisher}
-              synopsis={data.synopsis}
-              tittle={data.tittle}
-              author={data.author}
-              pageCount={data.pageCount}
-              id={data.id}
-              coverImageUrl={data.coverImageUrl}
+              publisher={book.publisher}
+              synopsis={book.synopsis}
+              tittle={book.tittle}
+              author={book.author}
+              pageCount={book.pageCount}
+              id={book.id}
+              coverImageUrl={book.coverImageUrl}
             />
           </Box>
         </Container>

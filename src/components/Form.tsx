@@ -35,11 +35,9 @@ const FormLogin: FC<IForm> = (props) => {
     async (values: Values) => {
       const { username, password } = values;
       if (mode === FormMode.signIn) {
-        signIn({ username: username, password: password }).then(() => {
-          history.push('/books');
-        });
+        signIn({ username: username, password: password });
       } else {
-        await signUp({ username: username, password: password });
+        signUp({ username: username, password: password });
       }
     },
     [mode],

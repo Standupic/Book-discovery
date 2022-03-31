@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useCallback } from 'react';
 import { Actions, useStoreActions, useStoreState } from 'easy-peasy';
 import { useHistory } from 'react-router-dom';
 import { Container, Input, Box, VStack, Grid, GridItem } from '@chakra-ui/react';
@@ -11,54 +11,14 @@ import Loader from '../components/Loader';
 const Books: FC = () => {
   const history = useHistory();
   const auth = useStoreState((state: StoreModel) => state.user.auth);
-  const fetchBooks = useStoreActions((actions: Actions<StoreModel>) => actions.books.fetchBooks);
-  const getBook = useStoreActions((actions: Actions<StoreModel>) => actions.books.getBook);
-  const searchBook = useStoreActions((actions: Actions<StoreModel>) => actions.books.searchBooks);
-  const [books, setBooks] = useState<IBook[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
+  const { books, error, loading } = useStoreState((state: StoreModel) => state.books);
+  const { fetchBooks, getBook, searchBooks, setError } = useStoreActions(
+    (actions: Actions<StoreModel>) => actions.books,
+  );
   const getBookHandler = async (key: string) => {
-    try {
-      setLoading(true);
-      const data = await getBook(key);
-      const {
-        book: { id },
-      } = data;
-      if (id) {
-        history.push(`/books/${id}`);
-      }
-    } catch (e) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchBooksHandler = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchBooks();
-      if (data && data.books.length) {
-        setBooks(data.books);
-      }
-    } catch (e) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const searching = async (event: any) => {
-    try {
-      setLoading(true);
-      const data = await searchBook(event.target.value);
-      if (data && data.books.length) {
-        setBooks(data.books);
-      }
-    } catch (e) {
-      setError(true);
-    } finally {
-      setLoading(false);
+    const book = await getBook(key);
+    if (book) {
+      history.push(`/books/${book.id}`);
     }
   };
 
@@ -69,7 +29,7 @@ const Books: FC = () => {
   }, [auth]);
 
   useEffect(() => {
-    fetchBooksHandler();
+    fetchBooks();
   }, []);
 
   const bookMap = books.map((book) => {
@@ -96,7 +56,12 @@ const Books: FC = () => {
         <Container maxW="container.lg" p={0}>
           <VStack spacing={4} align="flex-start">
             <Box>
-              <Input placeholder="to search" onChange={searching} />
+              <Input
+                placeholder="to search"
+                onChange={(e) => {
+                  searchBooks(e.target.value);
+                }}
+              />
             </Box>
             {loading ? (
               <Loader />
