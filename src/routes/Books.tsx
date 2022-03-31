@@ -13,6 +13,7 @@ const Books: FC = () => {
   const auth = useStoreState((state: StoreModel) => state.user.auth);
   const fetchBooks = useStoreActions((actions: Actions<StoreModel>) => actions.books.fetchBooks);
   const getBook = useStoreActions((actions: Actions<StoreModel>) => actions.books.getBook);
+  const searchBook = useStoreActions((actions: Actions<StoreModel>) => actions.books.searchBooks);
   const [books, setBooks] = useState<IBook[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -47,6 +48,20 @@ const Books: FC = () => {
     }
   };
 
+  const searching = async (event: any) => {
+    try {
+      setLoading(true);
+      const data = await searchBook(event.target.value);
+      if (data && data.books.length) {
+        setBooks(data.books);
+      }
+    } catch (e) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!auth) {
       history.push('/login');
@@ -66,6 +81,7 @@ const Books: FC = () => {
           tittle={book.tittle}
           author={book.author}
           id={book.id}
+          pageCount={book.pageCount}
           coverImageUrl={book.coverImageUrl}
         />
       </GridItem>
@@ -74,19 +90,24 @@ const Books: FC = () => {
   return (
     <>
       <Box p={5}>
-        <NavBar />
+        <NavBar tittle="Book discovery App" />
       </Box>
-      {loading && <Loader />}
-      <Container maxW="container.lg" p={0}>
-        <VStack spacing={4} align="flex-start">
-          <Box>
-            <Input placeholder="to search" />
-          </Box>
-          <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-            {!loading && bookMap}
-          </Grid>
-        </VStack>
-      </Container>
+      <Box>
+        <Container maxW="container.lg" p={0}>
+          <VStack spacing={4} align="flex-start">
+            <Box>
+              <Input placeholder="to search" onChange={searching} />
+            </Box>
+            {loading ? (
+              <Loader />
+            ) : (
+              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+                {!loading && bookMap}
+              </Grid>
+            )}
+          </VStack>
+        </Container>
+      </Box>
     </>
   );
 };

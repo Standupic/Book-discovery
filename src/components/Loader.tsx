@@ -3,9 +3,9 @@ import * as React from 'react';
 
 const Loader = () => {
   return (
-    <Flex bg="gray.100" align="center" justify="center" h="100vh">
-      <Box bg="white" p={6} rounded="md">
-        <Spinner />
+    <Flex align="center" justify="center" h="100vh" w="100wh">
+      <Box p={6} rounded="md" w="100%" textAlign="center">
+        <Spinner textAlign="center" />
       </Box>
     </Flex>
   );

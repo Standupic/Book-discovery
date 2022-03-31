@@ -4,7 +4,7 @@ import { Box, ChakraProvider, Flex, theme } from '@chakra-ui/react';
 import { useStoreState } from 'easy-peasy';
 import Login from './routes/Login';
 import Books from './routes/Books';
-import Book from './components/Book';
+import Book from './routes/Book';
 import { StoreModel } from './model';
 import Loader from './components/Loader';
 import LoginRoute from './components/LoginRoute';
@@ -21,11 +21,7 @@ const App = () => {
           <Login />
         </LoginRoute>
         <Route path="/books/:id">
-          <Flex bg="gray.100" align="center" justify="center" h="100vh">
-            <Box bg="white" p={6} rounded="md">
-              <Book />
-            </Box>
-          </Flex>
+          <Book />
         </Route>
         <Route path="/books">
           <Books />
