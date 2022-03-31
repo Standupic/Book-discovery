@@ -1,9 +1,8 @@
-import { FC, useEffect, useCallback } from 'react';
+import { FC, useEffect } from 'react';
 import { Actions, useStoreActions, useStoreState } from 'easy-peasy';
 import { useHistory } from 'react-router-dom';
 import { Container, Input, Box, VStack, Grid, GridItem } from '@chakra-ui/react';
 import { StoreModel } from '../model';
-import { IBook } from '../types/books';
 import BookItem from '../components/BookItem';
 import NavBar from '../components/NavBar';
 import Loader from '../components/Loader';
@@ -11,8 +10,8 @@ import Loader from '../components/Loader';
 const Books: FC = () => {
   const history = useHistory();
   const auth = useStoreState((state: StoreModel) => state.user.auth);
-  const { books, error, loading } = useStoreState((state: StoreModel) => state.books);
-  const { fetchBooks, getBook, searchBooks, setError } = useStoreActions(
+  const { books, loading } = useStoreState((state: StoreModel) => state.books);
+  const { fetchBooks, getBook, searchBooks } = useStoreActions(
     (actions: Actions<StoreModel>) => actions.books,
   );
   const getBookHandler = async (key: string) => {
