@@ -1,7 +1,7 @@
 import { useHistory, useParams } from 'react-router-dom';
 import { FC, useEffect, useState } from 'react';
 import { Actions, useStoreActions, useStoreState } from 'easy-peasy';
-import { Box, Container } from '@chakra-ui/react';
+import { Box, Container, Flex } from '@chakra-ui/react';
 import { StoreModel } from '../model';
 import { IBook } from '../types/books';
 import BookItem from '../components/BookItem';
@@ -30,23 +30,24 @@ const Book: FC = () => {
   if (book) {
     return (
       <>
-        <Box p={5} flex={1}>
+        <Box p={5}>
           <NavBar tittle="Book description" />
         </Box>
-        <Container maxW="container.lg" p={0}>
-          <Box bg="white" flex={2} p={6} rounded="md" maxW="1000px">
-            <BookItem
-              boxSize="250px"
-              publisher={book.publisher}
-              synopsis={book.synopsis}
-              tittle={book.tittle}
-              author={book.author}
-              pageCount={book.pageCount}
-              id={book.id}
-              coverImageUrl={book.coverImageUrl}
-            />
-          </Box>
-        </Container>
+        <Flex align="center" justify="center" h="100vh">
+          <Container minW="container.lg" p={0}>
+            <Box bg="white" flex={2} p={6} rounded="md" maxW="1000px">
+              <BookItem
+                publisher={book.publisher}
+                synopsis={book.synopsis}
+                tittle={book.tittle}
+                author={book.author}
+                pageCount={book.pageCount}
+                id={book.id}
+                coverImageUrl={book.coverImageUrl}
+              />
+            </Box>
+          </Container>
+        </Flex>
       </>
     );
   }

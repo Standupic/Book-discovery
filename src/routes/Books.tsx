@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { Actions, useStoreActions, useStoreState } from 'easy-peasy';
 import { useHistory } from 'react-router-dom';
-import { Container, Input, Box, VStack, Grid, GridItem } from '@chakra-ui/react';
+import { Container, Input, Box, VStack, Grid, GridItem, Text } from '@chakra-ui/react';
 import { StoreModel } from '../model';
 import BookItem from '../components/BookItem';
 import NavBar from '../components/NavBar';
@@ -42,6 +42,7 @@ const Books: FC = () => {
           id={book.id}
           pageCount={book.pageCount}
           coverImageUrl={book.coverImageUrl}
+          IsVisibleButton
         />
       </GridItem>
     );
@@ -66,7 +67,14 @@ const Books: FC = () => {
               <Loader />
             ) : (
               <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-                {!loading && bookMap}
+                {!loading && !bookMap.length && (
+                  <GridItem>
+                    <Box>
+                      <Text>The result of searching: </Text>
+                    </Box>
+                  </GridItem>
+                )}
+                {!loading && bookMap.length && bookMap}
               </Grid>
             )}
           </VStack>

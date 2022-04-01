@@ -3,13 +3,13 @@ import * as React from 'react';
 import { FC } from 'react';
 import { IBook } from '../types/books';
 
-const Book: FC<IBook & { boxSize?: string }> = (props) => {
-  const { tittle, author, coverImageUrl, publisher, synopsis, pageCount, boxSize } = props;
+const Book: FC<IBook & { IsVisibleButton?: boolean }> = (props) => {
+  const { tittle, author, coverImageUrl, publisher, synopsis, pageCount, IsVisibleButton } = props;
   return (
     <>
-      <Flex justifyContent={'space-between'} p={3} maxHeight="300px" border="1px solid #f1e9e9">
+      <Flex justifyContent={'space-between'} p={3} maxHeight="330px" border="1px solid #f1e9e9">
         <Box>
-          <Image src={coverImageUrl} maxWidth="100%" maxHeight="100%" w="250px" h="300px" />
+          <Image src={coverImageUrl} maxWidth="100%" maxHeight="100%" w="250px" h="inherit" />
         </Box>
         <Box flex="1" display="flex" flexDirection="column" px={3}>
           <Heading as="h1">{tittle}</Heading>
@@ -27,9 +27,11 @@ const Book: FC<IBook & { boxSize?: string }> = (props) => {
               {`${synopsis}`}
             </Text>
           </Box>
-          <Button p={2} colorScheme="teal" margin="auto 0 0">
-            Read more
-          </Button>
+          {IsVisibleButton && (
+            <Button p={2} colorScheme="teal" margin="auto 0 0">
+              Read more
+            </Button>
+          )}
         </Box>
       </Flex>
     </>
