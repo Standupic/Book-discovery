@@ -37,7 +37,7 @@ const Books: FC = () => {
         <BookItem
           publisher={book.publisher}
           synopsis={book.synopsis}
-          tittle={book.tittle}
+          title={book.title}
           author={book.author}
           id={book.id}
           pageCount={book.pageCount}

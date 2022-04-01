@@ -1,5 +1,5 @@
 export interface IBook {
-  tittle: number;
+  title: number;
   author: string;
   coverImageUrl: string;
   id: string;
