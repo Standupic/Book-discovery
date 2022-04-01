@@ -1,5 +1,4 @@
 import { action, Action, thunk, Thunk, computed, Computed } from 'easy-peasy';
-import debounce from 'lodash.debounce';
 import { IBook, IBooksAPI } from '../types/books';
 import axios from '../api';
 
