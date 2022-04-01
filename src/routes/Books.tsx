@@ -1,39 +1,29 @@
 import { FC, useEffect } from 'react';
 import { Actions, useStoreActions, useStoreState } from 'easy-peasy';
-import { useHistory } from 'react-router-dom';
 import { Container, Input, Box, VStack, Grid, GridItem, Text } from '@chakra-ui/react';
+import debounce from 'lodash.debounce';
 import { StoreModel } from '../model';
 import BookItem from '../components/BookItem';
 import NavBar from '../components/NavBar';
 import Loader from '../components/Loader';
 
 const Books: FC = () => {
-  const history = useHistory();
-  const auth = useStoreState((state: StoreModel) => state.user.auth);
-  const { books, loading } = useStoreState((state: StoreModel) => state.books);
-  const { fetchBooks, getBook, searchBooks } = useStoreActions(
+  const { books, loading, searchStr } = useStoreState((state: StoreModel) => state.books);
+  const { fetchBooks, searchBooks } = useStoreActions(
     (actions: Actions<StoreModel>) => actions.books,
   );
-  const getBookHandler = async (key: string) => {
-    const book = await getBook(key);
-    if (book) {
-      history.push(`/books/${book.id}`);
-    }
-  };
 
   useEffect(() => {
-    if (!auth) {
-      history.push('/login');
+    if (searchStr) {
+      searchBooks(searchStr);
+    } else {
+      fetchBooks();
     }
-  }, [auth]);
-
-  useEffect(() => {
-    fetchBooks();
   }, []);
 
   const bookMap = books.map((book) => {
     return (
-      <GridItem key={book.id} onClick={() => getBookHandler(book.id)}>
+      <GridItem key={book.id}>
         <BookItem
           publisher={book.publisher}
           synopsis={book.synopsis}
@@ -58,9 +48,7 @@ const Books: FC = () => {
             <Box>
               <Input
                 placeholder="to search"
-                onChange={(e) => {
-                  searchBooks(e.target.value);
-                }}
+                onChange={(e) => debounce(searchBooks(e.target.value), 500)}
               />
             </Box>
             {loading ? (

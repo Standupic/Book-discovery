@@ -13,11 +13,13 @@ const NavBar: FC<Props> = (props) => {
   const history = useHistory();
   const logOut = useStoreActions((actions: Actions<StoreModel>) => actions.user.logOut);
   const auth = useStoreState((state: StoreModel) => state.user.auth);
+  const clearSearchStr = useStoreState((state: Actions<StoreModel>) => state.books.clearSearchStr);
   const logOutHandler = useCallback(() => {
     if (!auth) {
       history.push('./login');
     }
     logOut();
+    clearSearchStr();
   }, [auth]);
   return (
     <Flex>

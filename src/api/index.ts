@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 import { getStorageValue, STORAGE_KEYS } from '../services/localStorage';
 import config from './config';
