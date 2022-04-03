@@ -1,9 +1,12 @@
 import { Actions } from 'easy-peasy';
+import { default as api, CancelTokenSource, AxiosError } from 'axios';
 import { Credential, IUserAPI } from '../types/user';
 import { User } from '../model/user';
 import axios from '../api';
 import { setStorageValue, STORAGE_KEYS } from '../services/localStorage';
 import { FormMode } from '../components/Form';
+
+const { CancelToken } = api;
 
 export const sigInUp = async (
   url: string,
@@ -31,4 +34,23 @@ export const sigInUp = async (
     }
   }
   setLoading(false);
+};
+
+export const cancelableFetch = {
+  isCanceled: (error: AxiosError) => {
+    return api.isCancel(error);
+  },
+  create: (fn: (signal: CancelTokenSource, ...args: any[]) => void, params: any) => {
+    let source = CancelToken.source();
+    return {
+      fetch: <T>(...args: T[]) => {
+        if (params.shouldCancelPrevRequest) {
+          console.log('cancel');
+          source.cancel('cancel previously request');
+        }
+        source = CancelToken.source();
+        return Promise.resolve(fn(source, args));
+      },
+    };
+  },
 };

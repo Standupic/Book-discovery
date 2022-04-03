@@ -6,6 +6,8 @@ import { StoreModel } from '../model';
 import BookItem from '../components/BookItem';
 import NavBar from '../components/NavBar';
 import Loader from '../components/Loader';
+import { cancelableFetch } from '../helpers';
+import axios from '../api';
 
 const Books: FC = () => {
   const { books, loading, searchStr } = useStoreState((state: StoreModel) => state.books);
@@ -13,12 +15,19 @@ const Books: FC = () => {
     (actions: Actions<StoreModel>) => actions.books,
   );
 
+  const requiest = () => {
+    return cancelableFetch.create(
+      debounce(async (source, args: any[]) => {
+        searchBooks({ args, token: source });
+      }, 300),
+      { shouldCancelPrevRequest: true },
+    );
+  };
+
+  const { fetch } = requiest();
+
   useEffect(() => {
-    if (searchStr) {
-      searchBooks(searchStr);
-    } else {
-      fetchBooks();
-    }
+    fetchBooks();
   }, []);
 
   const bookMap = books.map((book) => {
@@ -46,10 +55,7 @@ const Books: FC = () => {
         <Container maxW="container.lg" p={0}>
           <VStack spacing={4} align="flex-start">
             <Box>
-              <Input
-                placeholder="to search"
-                onChange={(e) => debounce(searchBooks(e.target.value), 500)}
-              />
+              <Input placeholder="to search" onChange={(e) => fetch(e.target.value)} />
             </Box>
             {loading ? (
               <Loader />

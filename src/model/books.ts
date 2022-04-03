@@ -1,4 +1,5 @@
 import { action, Action, thunk, Thunk, computed, Computed } from 'easy-peasy';
+import { CancelTokenSource } from 'axios';
 import { IBook, IBooksAPI } from '../types/books';
 import axios from '../api';
 
@@ -7,7 +8,7 @@ export interface Books {
   fetchBooks: Thunk<Books>;
   getBook: Thunk<Books, string>;
   setBookId: Action<Books, string>;
-  searchBooks: Thunk<Books, string>;
+  searchBooks: Thunk<Books, { token: CancelTokenSource; args: any[] }>;
   setBooks: Action<Books, IBook[]>;
   setLoading: Action<Books, boolean>;
   setError: Action<Books, boolean>;
@@ -59,20 +60,20 @@ const books: Books = {
       actions.setLoading(false);
     }
   }),
-  searchBooks: thunk(async (actions, payload: string) => {
-    actions.setSearchStr(payload);
+  searchBooks: thunk(async (actions, payload) => {
+    // actions.setSearchStr(payload.params.searchStr);
     try {
       actions.setLoading(true);
-      const { data } = await axios.get(`/books/`, {
+      const { data } = await axios.get(`/books`, {
+        cancelToken: payload.token.token,
         params: {
-          q: payload,
+          q: payload.args,
         },
       });
       if (data) {
         actions.setBooks(data.books);
       }
     } catch (e) {
-      console.log('cancel');
       actions.setError(true);
     } finally {
       actions.setLoading(false);
