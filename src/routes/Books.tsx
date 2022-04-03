@@ -7,10 +7,9 @@ import BookItem from '../components/BookItem';
 import NavBar from '../components/NavBar';
 import Loader from '../components/Loader';
 import { cancelableFetch } from '../helpers';
-import axios from '../api';
 
 const Books: FC = () => {
-  const { books, loading, searchStr } = useStoreState((state: StoreModel) => state.books);
+  const { books, loading } = useStoreState((state: StoreModel) => state.books);
   const { fetchBooks, searchBooks } = useStoreActions(
     (actions: Actions<StoreModel>) => actions.books,
   );

@@ -37,16 +37,16 @@ const Book: FC<IBook & { IsVisibleButton?: boolean }> = (props) => {
         <GridItem rowSpan={1} maxHeight="350px">
           <Image src={coverImageUrl} maxWidth="100%" maxHeight="100%" />
         </GridItem>
-        <GridItem rowSpan={1}>
+        <GridItem rowSpan={1} colSpan={IsVisibleButton ? 1 : 2}>
           <Flex direction="column" h="310px">
             <Text fontSize="md" fontWeight="bold">{`Autor: ${author}`}</Text>
             <Text fontSize="md" fontWeight="bold">{`Publisher: ${publisher}`}</Text>
             <Text fontSize="md" fontWeight="bold">{`Pages: ${pageCount}`}</Text>
             <Text
               as="p"
-              h="230px"
+              h={'230px'}
               fontSize="sm"
-              overflow="hidden"
+              overflow={'hidden'}
               text-overflow="ellipsis"
               white-space="nowrap">
               {`${synopsis}`}
