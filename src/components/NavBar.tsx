@@ -19,7 +19,6 @@ const NavBar: FC<Props> = (props) => {
       history.push('./login');
     }
     logOut();
-    clearSearchStr();
   }, [auth]);
   return (
     <Flex>

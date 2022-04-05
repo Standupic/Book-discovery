@@ -1,7 +1,19 @@
-import { action, Action, thunk, Thunk, computed, Computed } from 'easy-peasy';
+import {
+  action,
+  Action,
+  thunk,
+  Thunk,
+  computed,
+  Computed,
+  actionOn,
+  Actions,
+  State,
+  ActionOn,
+} from 'easy-peasy';
 import { CancelTokenSource } from 'axios';
 import { IBook, IBooksAPI } from '../types/books';
 import axios from '../api';
+import { StoreModel } from './index';
 
 export interface Books {
   books: IBook[] | [];
@@ -15,6 +27,7 @@ export interface Books {
   setSearchStr: Action<Books, string>;
   clearSearchStr: Action<Books>;
   currentBook?: Computed<Books, IBook | undefined, IBook>;
+  logOutOn: ActionOn<Books, StoreModel>;
   loading: boolean;
   error: boolean;
   id: string | null;
@@ -31,6 +44,15 @@ const books: Books = {
   setBookId: action((state, payload) => {
     state.id = payload;
   }),
+  // @ts-ignore
+  logOutOn: actionOn(
+    (actions, storeActions) => {
+      return storeActions.user.logOut;
+    },
+    (state, target) => {
+      state.searchStr = '';
+    },
+  ),
   clearSearchStr: action((state) => {
     state.searchStr = '';
   }),
@@ -61,7 +83,9 @@ const books: Books = {
     }
   }),
   searchBooks: thunk(async (actions, payload) => {
-    // actions.setSearchStr(payload.params.searchStr);
+    if (typeof payload.args === 'string') {
+      actions.setSearchStr(payload.args);
+    }
     try {
       actions.setLoading(true);
       const { data } = await axios.get(`/books`, {

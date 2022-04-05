@@ -16,8 +16,8 @@ const Books: FC = () => {
 
   const requiest = () => {
     return cancelableFetch.create(
-      debounce(async (source, args: any[]) => {
-        searchBooks({ args, token: source });
+      debounce(async (source, args) => {
+        searchBooks({ args: args[0], token: source });
       }, 300),
       { shouldCancelPrevRequest: true },
     );
