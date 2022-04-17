@@ -26,7 +26,7 @@ export interface Books {
   setError: Action<Books, boolean>;
   setSearchStr: Action<Books, string>;
   clearSearchStr: Action<Books>;
-  currentBook?: Computed<Books, IBook | undefined, IBook>;
+  currentBook?: Computed<Books, IBook | undefined>;
   logOutOn: ActionOn<Books, StoreModel>;
   loading: boolean;
   error: boolean;

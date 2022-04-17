@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useStoreState } from 'easy-peasy';
-import { Box, Container, Flex } from '@chakra-ui/react';
+import { Box, Container } from '@chakra-ui/react';
 import { StoreModel } from '../model';
 import BookItem from '../components/BookItem';
 import Loader from '../components/Loader';
@@ -9,9 +9,8 @@ import NavBar from '../components/NavBar';
 const Book: FC = () => {
   const { loading } = useStoreState((state: StoreModel) => state.books);
   const currentBook = useStoreState((state: StoreModel) => state.books.currentBook);
-  // @ts-ignore
-  const { publisher, synopsis, title, author, pageCount, id, coverImageUrl } = currentBook;
-  if (currentBook) {
+  if (currentBook && currentBook.result) {
+    const { publisher, synopsis, title, author, pageCount, id, coverImageUrl } = currentBook.result;
     return (
       <>
         <Box p={5}>
